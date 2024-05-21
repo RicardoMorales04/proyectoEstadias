@@ -1,15 +1,16 @@
 "use client";
-import "../../../../../public/css/formulario.css"
+import "../../../../../public/css/formulario.css";
 import React, { useState } from 'react';
 import axios from 'axios';
 
 function Registro() {
+    const [file, setFile] = useState(null);
     const [usuario, setUsuario] = useState({
         nombre: '',
         apellidos: '',
         numExpediente: '',
         carrera: '',
-        cuatrimestre: '',
+        cuatrimestre: ''
     });
 
     const handleChange = (e) => {
@@ -21,27 +22,32 @@ function Registro() {
     };
 
     const handleFileChange = (e) => {
-        const file = e.target.files[0];
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            setUsuario({
-                ...usuario,
-                foto: reader.result
-            });
-        };
-        reader.readAsDataURL(file);
+        setFile(e.target.files[0]);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const formData = new FormData();
+        formData.append('nombre', usuario.nombre);
+        formData.append('apellidos', usuario.apellidos);
+        formData.append('numExpediente', usuario.numExpediente);
+        formData.append('carrera', usuario.carrera);
+        formData.append('cuatrimestre', usuario.cuatrimestre);
+        if (file) {
+            formData.append('foto', file);
+        }
+
         try {
-            const resp = await axios.post('/api/usuarios', usuario);
+            const resp = await axios.post('/api/usuarios', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
             console.log(resp);
         } catch (err) {
             console.error('Error al registrar:', err);
         }
     };
-
 
     return (
         <div className="container">
@@ -52,7 +58,7 @@ function Registro() {
                     <input type="text" id="nombre" name="nombre" value={usuario.nombre} onChange={handleChange} required />
                 </div>
                 <div>
-                    <label htmlFor="nombre">Apellidos:</label>
+                    <label htmlFor="apellidos">Apellidos:</label>
                     <input type="text" id="apellidos" name="apellidos" value={usuario.apellidos} onChange={handleChange} required />
                 </div>
                 <div>
@@ -90,10 +96,11 @@ function Registro() {
                     </select>
                 </div>
                 <div>
-                    <input type="file" id="foto" name="foto" accept="image/*" onChange={handleFileChange}/>
-                    <label htmlFor="foto">Cargar Imagen:</label>
+                    <input type="file" onChange={handleFileChange} />
+                    <div className="imagenCarga">
+                        {file && <img src={URL.createObjectURL(file)} alt="Imagen Cargada" />}
+                    </div>
                 </div>
-
                 <div>
                     <input type="checkbox" id="terminos" name="terminos" required />
                     <label htmlFor="terminos">Acepto los términos y condiciones</label>
@@ -101,7 +108,7 @@ function Registro() {
                 <button type="submit">Registrar</button>
             </form>
         </div>
-    )
+    );
 }
 
-export default Registro
+export default Registro;

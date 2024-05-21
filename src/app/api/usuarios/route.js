@@ -1,29 +1,70 @@
 import { NextResponse } from 'next/server';
-import {conn} from '@/libs/mysql'
+import { conn } from '@/libs/mysql';
 
-export function GET() {
-  return NextResponse.json('listando usuarios');
+export async function GET() {
+  try {
+    const [rows] = await conn.query('SELECT * FROM usuarios');
+    return NextResponse.json(rows);
+  } catch (error) {
+    return NextResponse.json([], { status: 500 });
+  }
 }
 
 export async function POST(request) {
-  try {
-    const {nombre, apellidos, numExpediente, carrera, cuatrimestre, foto,} = await request.json();
+    try {
+        const data = await request.formData();
+        const image = data.get("foto");
 
-    const result = await conn.query('INSERT INTO usuarios SET ?', {
-        nombre: nombre,
-        apellidos: apellidos,
-        numExpediente: numExpediente,
-        carrera: carrera,
-        cuatrimestre: cuatrimestre,
-        foto: foto
-    });
+        if (!data.get("nombre")) {
+            return NextResponse.json(
+                {
+                    message: "Nombre es requerido",
+                },
+                {
+                    status: 400,
+                }
+            );
+        }
 
-    console.log(result);
+        if (!image) {
+            return NextResponse.json(
+                {
+                    message: "Imagen es requerida",
+                },
+                {
+                    status: 400,
+                }
+            );
+        }
 
-    return NextResponse.json({ message: 'Datos recibidos', data });
+        const imageBuffer = await image.arrayBuffer();
+        const buffer = Buffer.from(imageBuffer);
 
-  } catch (error) {
-    console.error('Error processing request:', error);
-    return NextResponse.json({ error: 'Failed to process request' }, { status: 500 });
-  }
+        const result = await conn.query("INSERT INTO usuarios SET ?", {
+            nombre: data.get("nombre"),
+            apellidos: data.get("apellidos"),
+            numExpediente: data.get("numExpediente"),
+            carrera: data.get("carrera"),
+            cuatrimestre: data.get("cuatrimestre"),
+            foto: buffer,
+        });
+
+        return NextResponse.json({
+            nombre: data.get("nombre"),
+            apellidos: data.get("apellidos"),
+            numExpediente: data.get("numExpediente"),
+            carrera: data.get("carrera"),
+            cuatrimestre: data.get("cuatrimestre"),
+            id: result.insertId,
+        });
+    } catch (error) {
+        return NextResponse.json(
+            {
+                message: error.message,
+            },
+            {
+                status: 500,
+            }
+        );
+    }
 }

@@ -46,3 +46,20 @@ button {
 button:hover {
     background-color: #007f68; /* Cambio de color al pasar el mouse sobre el botón */
 }
+
+.imagenCarga {
+    width: 150px; /* Ancho infantil */
+    height: 150px; /* Alto infantil */
+    overflow: hidden; /* Oculta el exceso de imagen si es necesario */
+    border: 2px solid #ccc; /* Bordes opcionales */
+    border-radius: 8px; /* Esquinas redondeadas opcionales */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.imagenCarga img {
+    max-width: 100%; /* Ajusta la imagen al ancho del contenedor */
+    max-height: 100%; /* Ajusta la imagen al alto del contenedor */
+    object-fit: cover; /* Asegura que la imagen cubra el contenedor sin distorsión */
+}
