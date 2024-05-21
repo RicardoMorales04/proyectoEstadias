@@ -1,0 +1,48 @@
+.container {
+    background-color: #00A789; /* Fondo verde */
+    padding: 20px; /* Espacio interior del contenedor */
+    margin: 20px auto; /* Auto para centrar horizontalmente */
+    border-radius: 10px; /* Bordes redondeados */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra */
+    max-width: 400px; /* Ancho máximo del contenedor */
+}
+
+form {
+    background-color: #002855; /* Fondo azul oscuro para el formulario */
+    padding: 20px; /* Espacio interior del formulario */
+    border-radius: 10px; /* Bordes redondeados */
+}
+
+label {
+    color: #ffffff; /* Texto blanco para las etiquetas */
+    margin-bottom: 8px; /* Espacio entre etiquetas */
+}
+
+input[type="text"],
+select,
+button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+input[type="checkbox"] {
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+button {
+    background-color: #00A789; /* Fondo verde para el botón */
+    color: #ffffff; /* Texto blanco para el botón */
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #007f68; /* Cambio de color al pasar el mouse sobre el botón */
+}
