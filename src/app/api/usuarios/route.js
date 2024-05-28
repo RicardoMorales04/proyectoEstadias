@@ -2,69 +2,55 @@ import { NextResponse } from 'next/server';
 import { conn } from '@/libs/mysql';
 
 export async function GET() {
-  try {
-    const [rows] = await conn.query('SELECT * FROM usuarios');
-    return NextResponse.json(rows);
-  } catch (error) {
-    return NextResponse.json([], { status: 500 });
-  }
-}
-
-export async function POST(request) {
     try {
-        const data = await request.formData();
-        const image = data.get("foto");
-
-        if (!data.get("nombre")) {
-            return NextResponse.json(
-                {
-                    message: "Nombre es requerido",
-                },
-                {
-                    status: 400,
-                }
-            );
-        }
-
-        if (!image) {
-            return NextResponse.json(
-                {
-                    message: "Imagen es requerida",
-                },
-                {
-                    status: 400,
-                }
-            );
-        }
-
-        const imageBuffer = await image.arrayBuffer();
-        const buffer = Buffer.from(imageBuffer);
-
-        const result = await conn.query("INSERT INTO usuarios SET ?", {
-            nombre: data.get("nombre"),
-            apellidos: data.get("apellidos"),
-            numExpediente: data.get("numExpediente"),
-            carrera: data.get("carrera"),
-            cuatrimestre: data.get("cuatrimestre"),
-            foto: buffer,
-        });
-
+        const result = await conn.query('SELECT * FROM usuarios')
+        return NextResponse.json(result);
+    } catch (err) {
         return NextResponse.json({
-            nombre: data.get("nombre"),
-            apellidos: data.get("apellidos"),
-            numExpediente: data.get("numExpediente"),
-            carrera: data.get("carrera"),
-            cuatrimestre: data.get("cuatrimestre"),
-            id: result.insertId,
-        });
-    } catch (error) {
-        return NextResponse.json(
-            {
-                message: error.message,
-            },
+            message: err.message,
+        },
             {
                 status: 500,
             }
         );
+    }
+}
+
+export async function POST(request) {
+    try {
+        //const {nombre, apellidos, numExpediente, carrera, cuatrimestre, foto} = await request.formData();
+        const formData = await request.formData();
+        const nombre = formData.get('nombre');
+        const apellidos = formData.get('apellidos');
+        const numExpediente = formData.get('numExpediente');
+        const carrera = formData.get('carrera');
+        const cuatrimestre = formData.get('cuatrimestre');
+        const foto = formData.get('foto');
+        
+        const result = await conn.query("INSERT INTO usuarios SET ?", {
+            nombre, 
+            apellidos, 
+            numExpediente, 
+            carrera, 
+            cuatrimestre,
+            foto
+        });
+
+        return NextResponse.json({
+            nombre, 
+            apellidos, 
+            numExpediente, 
+            carrera, 
+            cuatrimestre,
+            foto,
+            id: result.insertId,
+        })
+    } catch (err) {
+        console.log(err);
+        return NextResponse.json(
+            {
+                message: err.message
+            }
+        )
     }
 }

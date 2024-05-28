@@ -1,56 +1,56 @@
 "use client";
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import '../../../../../public/css/registrados.css';
+
+async function loadUsuarios() {
+    const { data } = await axios.get('http://localhost:3000/api/usuarios');
+    return data;
+}
 
 function Usuarios() {
     const [usuarios, setUsuarios] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
 
     useEffect(() => {
-        const fetchUsuarios = async () => {
-            try {
-                const response = await axios.get('/api/usuarios');
-                console.log('Datos de usuarios:', response.data);
-                setUsuarios(response.data);
-            } catch (error) {
-                setError('Error fetching users');
-            } finally {
-                setLoading(false);
-            }
-        };
-
+        async function fetchUsuarios() {
+            const data = await loadUsuarios();
+            setUsuarios(data);
+        }
         fetchUsuarios();
     }, []);
 
-
-    if (loading) {
-        return <div>Loading...</div>;
-    }
-
-    if (error) {
-        return <div>{error}</div>;
+    function getPhotoUrl(foto) {
+        if (typeof foto === 'string' && foto.startsWith('data:image/')) {
+            // La foto ya está en formato base64
+            return foto;
+        } else if (foto && foto.data) {
+            // La foto está en formato binario, necesita conversión a base64
+            return `data:image/jpeg;base64,${btoa(String.fromCharCode(...new Uint8Array(foto.data)))}`;
+        }
+        // En caso de que la foto no esté disponible o no esté en un formato esperado
+        return '';
     }
 
     return (
-        <div className="container">
-            <h1>Usuarios Registrados</h1>
+        <div className="contenedor">
+            <h1>Alumnos Registrados</h1>
             <table>
                 <thead>
                     <tr>
                         <th>ID</th>
                         <th>Nombre</th>
                         <th>Apellidos</th>
-                        <th>Número de Expediente</th>
+                        <th>Numero de Expediente</th>
                         <th>Carrera</th>
                         <th>Cuatrimestre</th>
                         <th>Foto</th>
-                        <th>Fecha de Inscripción</th>
+                        <th>Fecha de Inscripcion</th>
                     </tr>
                 </thead>
-                {Array.isArray(usuarios) ? (
-                    <tbody>
-                        {usuarios.map((usuario) => (
+                <tbody>
+                    {usuarios.map(usuario => {
+                        const photoUrl = getPhotoUrl(usuario.foto);
+                        return (
                             <tr key={usuario.usuario_id}>
                                 <td>{usuario.usuario_id}</td>
                                 <td>{usuario.nombre}</td>
@@ -58,50 +58,13 @@ function Usuarios() {
                                 <td>{usuario.numExpediente}</td>
                                 <td>{usuario.carrera}</td>
                                 <td>{usuario.cuatrimestre}</td>
-                                <td>
-                                    {usuario.foto && (
-                                        <img
-                                            src={`data:image/jpeg;base64,${Buffer.from(usuario.foto).toString('base64')}`}
-                                            alt="Foto"
-                                            width="50"
-                                            height="50"
-                                        />
-                                    )}
-                                </td>
-                                <td>{new Date(usuario.fecha_inscripcion).toLocaleString()}</td>
+                                <td><img src={photoUrl} alt="Foto de usuario" /></td>
+                                <td>{new Date(usuario.fecha_inscripcion).toLocaleDateString()}</td>
                             </tr>
-                        ))}
-                    </tbody>
-                ) : (
-                    <tbody>
-                        <tr>
-                            <td colSpan="2">No se encontraron usuarios.</td>
-                        </tr>
-                    </tbody>
-                )}
-
+                        );
+                    })}
+                </tbody>
             </table>
-            <style jsx>{`
-        .container {
-          padding: 20px;
-        }
-        table {
-          width: 100%;
-          border-collapse: collapse;
-        }
-        th, td {
-          border: 1px solid #ddd;
-          padding: 8px;
-          text-align: left;
-        }
-        th {
-          background-color: #f2f2f2;
-        }
-        img {
-          display: block;
-          margin: 0 auto;
-        }
-      `}</style>
         </div>
     );
 }

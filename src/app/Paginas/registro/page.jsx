@@ -2,7 +2,7 @@ import "../../../../public/css/registro.css"
 
 function Registro(){
     return(
-        <div class="container">
+        <div className="container">
             <h1>Registro de Talleres</h1>
             <table>
                 <thead>

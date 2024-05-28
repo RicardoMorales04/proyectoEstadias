@@ -2,6 +2,7 @@
 import "../../../../../public/css/formulario.css";
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useParams } from "next/navigation";
 
 function Registro() {
     const [file, setFile] = useState(null);
@@ -12,6 +13,8 @@ function Registro() {
         carrera: '',
         cuatrimestre: ''
     });
+
+    const params = useParams();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -27,25 +30,24 @@ function Registro() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const formData = new FormData();
-        formData.append('nombre', usuario.nombre);
-        formData.append('apellidos', usuario.apellidos);
-        formData.append('numExpediente', usuario.numExpediente);
-        formData.append('carrera', usuario.carrera);
-        formData.append('cuatrimestre', usuario.cuatrimestre);
-        if (file) {
-            formData.append('foto', file);
-        }
+        
+        if(!params.id){
+            const formData = new FormData();
+            formData.append('nombre', usuario.nombre)
+            formData.append('apellidos', usuario.apellidos)
+            formData.append('numExpediente', usuario.numExpediente)
+            formData.append('carrera', usuario.carrera)
+            formData.append('cuatrimestre', usuario.cuatrimestre)
+            formData.append('foto', file)
 
-        try {
-            const resp = await axios.post('/api/usuarios', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
-            console.log(resp);
-        } catch (err) {
-            console.error('Error al registrar:', err);
+        const res = await axios.post("/api/usuarios", formData, {
+            headers:{
+                'Content-Type' : 'multipart/form-data'
+            }
+        });
+        }
+        else{
+            const res = await axios.put("/api/usuarios"+ params.id, usuario)
         }
     };
 
