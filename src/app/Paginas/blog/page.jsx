@@ -7,7 +7,6 @@ function Blog() {
     const [titulo, setTitulo] = useState("");
     const [contenido, setContenido] = useState("");
     const [autor, setAutor] = useState("");
-    const [autorTipo, setAutorTipo] = useState("usuario");
     const [mensaje, setMensaje] = useState("");
 
     useEffect(() => {
@@ -30,8 +29,7 @@ function Blog() {
             body: JSON.stringify({
                 titulo,
                 contenido,
-                autor_id: autor,
-                autor_tipo: autorTipo,
+                autor,
             }),
         });
 
@@ -40,7 +38,6 @@ function Blog() {
             setTitulo("");
             setContenido("");
             setAutor("");
-            setAutorTipo("usuario");
             const data = await res.json();
             setArticulos([data, ...articulos]);
         } else {
@@ -75,20 +72,13 @@ function Blog() {
                             ></textarea>
                         </div>
                         <div>
-                            <label>Autor (ID):</label>
+                            <label>Autor:</label>
                             <input
                                 type="text"
                                 value={autor}
                                 onChange={(e) => setAutor(e.target.value)}
                                 required
                             />
-                        </div>
-                        <div>
-                            <label>Tipo de Autor:</label>
-                            <select value={autorTipo} onChange={(e) => setAutorTipo(e.target.value)}>
-                                <option value="usuario">Usuario</option>
-                                <option value="profesor">Profesor</option>
-                            </select>
                         </div>
                         <button type="submit">Publicar</button>
                     </form>
@@ -103,9 +93,7 @@ function Blog() {
                             <article key={articulo.blog_id}>
                                 <header>
                                     <h2>{articulo.titulo}</h2>
-                                    <p>
-                                        Por: {articulo.autor_tipo === 'usuario' ? `Usuario ${articulo.autor_id}` : `Profesor ${articulo.autor_id}`} | Publicado el {new Date(articulo.fecha_publicacion).toLocaleDateString()}
-                                    </p>
+                                    <p>Por: {articulo.autor} | Publicado el {new Date(articulo.fecha_publicacion).toLocaleDateString()}</p>
                                 </header>
                                 <p>{articulo.contenido}</p>
                             </article>

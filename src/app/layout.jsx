@@ -32,7 +32,8 @@ export default function RootLayout({ children }) {
           <ul>
             <li><a href="/">INICIO</a></li>
             <li><a href="http://localhost:3000/Paginas/blog">BLOG</a></li>
-            <li><a href="http://localhost:3000/Paginas/registro">REGISTRO</a></li>
+            <li><a href="http://localhost:3000/Paginas/proyectos">PROYECTOS</a></li>
+            <li><a href="http://localhost:3000/Paginas/login">LOGIN</a></li>
           </ul>
         </div>
 

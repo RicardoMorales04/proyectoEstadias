@@ -1,21 +1,21 @@
 .container {
-    background-color: #00A789; /* Fondo verde */
-    padding: 20px; /* Espacio interior del contenedor */
-    margin: 20px auto; /* Auto para centrar horizontalmente */
-    border-radius: 10px; /* Bordes redondeados */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra */
-    max-width: 400px; /* Ancho máximo del contenedor */
+    background-color: #00A789;
+    padding: 20px;
+    margin: 20px auto;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
 }
 
 form {
-    background-color: #002855; /* Fondo azul oscuro para el formulario */
-    padding: 20px; /* Espacio interior del formulario */
-    border-radius: 10px; /* Bordes redondeados */
+    background-color: #002855;
+    padding: 20px;
+    border-radius: 10px;
 }
 
 label {
-    color: #ffffff; /* Texto blanco para las etiquetas */
-    margin-bottom: 8px; /* Espacio entre etiquetas */
+    color: #ffffff;
+    margin-bottom: 8px;
 }
 
 input[type="text"],
@@ -35,8 +35,8 @@ input[type="checkbox"] {
 }
 
 button {
-    background-color: #00A789; /* Fondo verde para el botón */
-    color: #ffffff; /* Texto blanco para el botón */
+    background-color: #00A789;
+    color: #ffffff;
     border: none;
     border-radius: 5px;
     padding: 10px 20px;
@@ -44,22 +44,26 @@ button {
 }
 
 button:hover {
-    background-color: #007f68; /* Cambio de color al pasar el mouse sobre el botón */
+    background-color: #007f68;
 }
 
 .imagenCarga {
-    width: 150px; /* Ancho infantil */
-    height: 150px; /* Alto infantil */
-    overflow: hidden; /* Oculta el exceso de imagen si es necesario */
-    border: 2px solid #ccc; /* Bordes opcionales */
-    border-radius: 8px; /* Esquinas redondeadas opcionales */
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
+    border: 2px solid #ccc;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .imagenCarga img {
-    max-width: 100%; /* Ajusta la imagen al ancho del contenedor */
-    max-height: 100%; /* Ajusta la imagen al alto del contenedor */
-    object-fit: cover; /* Asegura que la imagen cubra el contenedor sin distorsión */
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+}
+
+.tit{
+    text-align: center;
 }

@@ -5,9 +5,11 @@ export default async function handlerPOST(req, res) {
         const { titulo, contenido, autor_id, autor_tipo } = req.body;
 
         try {
+            const db = await conn();
+
             const [result] = await db.query(
-                'INSERT INTO blog (titulo, contenido, autor_id, autor_tipo) VALUES (?, ?, ?, ?)',
-                [titulo, contenido, autor_id, autor_tipo]
+                'INSERT INTO blog (titulo, contenido, profesor_id, usuario_id) VALUES (?, ?, ?, ?)',
+                [titulo, contenido, autor_tipo === 'profesor' ? autor_id : null, autor_tipo === 'usuario' ? autor_id : null]
             );
 
             res.status(201).json({ blog_id: result.insertId });
@@ -24,6 +26,7 @@ export default async function handlerPOST(req, res) {
 export default async function handlerGET(req, res) {
     if (req.method === 'GET') {
         try {
+            const db = await conn();
             const [rows] = await db.query('SELECT * FROM blog ORDER BY fecha_publicacion DESC');
             res.status(200).json(rows);
         } catch (error) {
