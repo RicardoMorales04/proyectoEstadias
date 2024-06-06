@@ -59,19 +59,19 @@ function Registro() {
             <form onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor="usuario">Usuario:</label>
-                    <input type="text" id="usuario" name="usuario" value={usuario.usuario} onChange={handleChange} required />
+                    <input className="inputs" type="text" id="usuario" name="usuario" value={usuario.usuario} onChange={handleChange} required />
                 </div>
                 <div>
                     <label htmlFor="nombre">Nombre:</label>
-                    <input type="text" id="nombre" name="nombre" value={usuario.nombre} onChange={handleChange} required />
+                    <input className="inputs" type="text" id="nombre" name="nombre" value={usuario.nombre} onChange={handleChange} required />
                 </div>
                 <div>
                     <label htmlFor="apellidos">Apellidos:</label>
-                    <input type="text" id="apellidos" name="apellidos" value={usuario.apellidos} onChange={handleChange} required />
+                    <input className="inputs" type="text" id="apellidos" name="apellidos" value={usuario.apellidos} onChange={handleChange} required />
                 </div>
                 <div>
                     <label htmlFor="numExpediente">Número de Expediente:</label>
-                    <input type="text" id="numExpediente" name="numExpediente" value={usuario.numExpediente} onChange={handleChange} required />
+                    <input className="inputs" type="text" id="numExpediente" name="numExpediente" value={usuario.numExpediente} onChange={handleChange} required />
                 </div>
                 <div>
                     <label htmlFor="carrera">Carrera:</label>
@@ -110,10 +110,10 @@ function Registro() {
                     </div>
                 </div>
                 <div>
-                    <input type="checkbox" id="terminos" name="terminos" required />
+                    <input className="inputs" type="checkbox" id="terminos" name="terminos" required />
                     <label htmlFor="terminos">Acepto los términos y condiciones</label>
                 </div>
-                <button type="submit">Registrar</button>
+                <button type="submit" className="botonRegistro">Registrar</button>
             </form>
         </div>
     );

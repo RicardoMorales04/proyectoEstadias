@@ -13,7 +13,6 @@ h1 {
     color: #002855;
 }
 
-/* Estilos para la tabla */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -22,7 +21,6 @@ table {
     border: 2px solid #00A789;
 }
 
-/* Estilos para las celdas de la tabla */
 th, td {
     padding: 8px;
     text-align: left;
@@ -32,19 +30,16 @@ th, td {
     border-left: 2px solid #000;
 }
 
-/* Estilos para las cabeceras de la tabla */
 th {
     background-color: #00A789;
     text-align: center;
 }
 
-/* Estilos para las filas de la tabla */
 tr:nth-child(even) {
     background-color: #f9f9f9;
 }
 
-/* Estilos para la imagen de la foto */
-img {
+.foto {
     max-width: 50px;
     border-radius: 50%;
 }

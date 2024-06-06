@@ -18,9 +18,9 @@ label {
     margin-bottom: 8px;
 }
 
-input[type="text"],
+.inputs[type="text"],
 select,
-button {
+.botonRegistro {
     width: 100%;
     padding: 10px;
     margin-bottom: 20px;
@@ -29,12 +29,12 @@ button {
     box-sizing: border-box;
 }
 
-input[type="checkbox"] {
+.inputs[type="checkbox"] {
     margin-right: 5px;
     vertical-align: middle;
 }
 
-button {
+.botonRegistro {
     background-color: #00A789;
     color: #ffffff;
     border: none;
@@ -43,7 +43,7 @@ button {
     cursor: pointer;
 }
 
-button:hover {
+.botonRegistro:hover {
     background-color: #007f68;
 }
 

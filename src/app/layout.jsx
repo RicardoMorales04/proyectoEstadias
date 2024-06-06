@@ -33,7 +33,7 @@ export default function RootLayout({ children }) {
             <li><a href="/">INICIO</a></li>
             <li><a href="http://localhost:3000/Paginas/blog">BLOG</a></li>
             <li><a href="http://localhost:3000/Paginas/proyectos">PROYECTOS</a></li>
-            <li><a href="http://localhost:3000/Paginas/login">LOGIN</a></li>
+            <li><a href="http://localhost:3000/Paginas/login">INICIAR SESION</a></li>
           </ul>
         </div>
 
@@ -42,7 +42,7 @@ export default function RootLayout({ children }) {
             <div className="contenedor-mapa">
                 <iframe
                     src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d8518.983113962704!2d-100.01360384677483!3d20.36759990579274!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x16daa5dc56c8c592!2sUniversidad%20Tecnol%C3%B3gica%20de%20San%20Juan%20del%20R%C3%ADo!5e0!3m2!1ses!2smx!4v1657510541631!5m2!1ses!2smx"
-                    style={{ border: 0, width: '600px', height: '450px', borderRadius: '20px' }} // Aquí está el objeto de estilo
+                    style={{ border: 0, width: '600px', height: '450px', borderRadius: '20px' }}
                     allowFullScreen=""
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"

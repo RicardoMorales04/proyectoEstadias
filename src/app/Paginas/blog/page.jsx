@@ -6,7 +6,6 @@ function Blog() {
     const [articulos, setArticulos] = useState([]);
     const [titulo, setTitulo] = useState("");
     const [contenido, setContenido] = useState("");
-    const [autor, setAutor] = useState("");
     const [mensaje, setMensaje] = useState("");
 
     useEffect(() => {
@@ -37,7 +36,6 @@ function Blog() {
             setMensaje("Artículo publicado con éxito");
             setTitulo("");
             setContenido("");
-            setAutor("");
             const data = await res.json();
             setArticulos([data, ...articulos]);
         } else {
@@ -70,15 +68,6 @@ function Blog() {
                                 onChange={(e) => setContenido(e.target.value)}
                                 required
                             ></textarea>
-                        </div>
-                        <div>
-                            <label>Autor:</label>
-                            <input
-                                type="text"
-                                value={autor}
-                                onChange={(e) => setAutor(e.target.value)}
-                                required
-                            />
                         </div>
                         <button type="submit">Publicar</button>
                     </form>
