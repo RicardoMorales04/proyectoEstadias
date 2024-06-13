@@ -1,15 +1,6 @@
 import { NextResponse } from 'next/server';
-import { conn, query } from '@/libs/mysql';
+import { query } from '@/libs/mysql';
 
-export async function GET() {
-    try {
-      const result = await query('SELECT * FROM usuarios');
-      return NextResponse.json(result);
-    } catch (err) {
-      return NextResponse.json({ message: err.message }, { status: 500 });
-    }
-  }
-  
   export async function POST(request) {
     try {
       const { usuario, numExpediente } = await request.json();

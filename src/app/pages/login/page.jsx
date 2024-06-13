@@ -47,7 +47,7 @@ function LoginPage() {
         </div>
         {error && <p className="error-message">{error}</p>}
         <button type="submit" className="login-button">Iniciar Sesion</button>
-        <a href="http://localhost:3000/Paginas/registro">¿No tienes cuenta? Regístrate Aquí</a>
+        <a href="http://localhost:3000/pages/registro">¿No tienes cuenta? Regístrate Aquí</a>
       </form>
     </div>
   );

@@ -31,9 +31,9 @@ export default function RootLayout({ children }) {
         <div className="mini-menu">
           <ul>
             <li><a href="/">INICIO</a></li>
-            <li><a href="http://localhost:3000/Paginas/blog">BLOG</a></li>
-            <li><a href="http://localhost:3000/Paginas/proyectos">PROYECTOS</a></li>
-            <li><a href="http://localhost:3000/Paginas/login">INICIAR SESION</a></li>
+            <li><a href="http://localhost:3000/pages/blog">BLOG</a></li>
+            <li><a href="http://localhost:3000/pages/proyectos">PROYECTOS</a></li>
+            <li><a href="http://localhost:3000/pages/login">INICIAR SESION</a></li>
           </ul>
         </div>
 
