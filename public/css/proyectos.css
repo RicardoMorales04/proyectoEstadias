@@ -41,3 +41,40 @@ a:hover {
 .tit{
     text-align: center;
 }
+
+.divForm {
+    background-color: #00A789;
+    border-radius: 8px;     
+    width: 100%;
+    max-width: 400px;
+    box-sizing: border-box;
+    margin: 2rem auto;
+    padding: 1rem;
+    box-shadow: 0 0 10px
+}
+
+.divForm label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.divForm select, .divForm button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.divForm button {
+    background-color: #45a049;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.divForm button:hover {
+    background-color: #002855;
+}

@@ -6,47 +6,39 @@ function Blog() {
     const [articulos, setArticulos] = useState([]);
     const [titulo, setTitulo] = useState("");
     const [contenido, setContenido] = useState("");
-    const [mensaje, setMensaje] = useState("");
 
     useEffect(() => {
         const fetchArticulos = async () => {
-            const res = await fetch("/api/blogs");
-            const data = await res.json();
-            setArticulos(data);
+            try {
+                // Realizar la solicitud GET a la API para obtener los artículos
+                const res = await fetch("/api/blogs");
+                const data = await res.json();
+                setArticulos(data); // Establecer los artículos obtenidos en el estado local
+            } catch (error) {
+                console.error("Error al obtener los artículos:", error);
+                // Manejar errores de solicitud o procesamiento de datos
+            }
         };
 
-        fetchArticulos();
-    }, []);
+        fetchArticulos(); // Llamar a la función de obtención de artículos al montar el componente
+    }, []); // El array vacío como dependencia asegura que se ejecute solo una vez al montarse el componente
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const res = await fetch("/api/blog", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                titulo,
-                contenido,
-                autor,
-            }),
-        });
-
-        if (res.ok) {
-            setMensaje("Artículo publicado con éxito");
-            setTitulo("");
-            setContenido("");
-            const data = await res.json();
-            setArticulos([data, ...articulos]);
-        } else {
-            setMensaje("Error al publicar el artículo");
+        try {
+            // Código para enviar un nuevo artículo a la API si es necesario
+            // Aquí puedes implementar la lógica para enviar datos al backend
+            // Por ejemplo, utilizando fetch o axios para realizar una solicitud POST
+        } catch (error) {
+            console.error("Error al publicar el artículo:", error);
+            // Manejar errores de publicación de artículo
         }
     };
 
     return (
         <div className="blog">
             <header>
-                <h1>Taller de Proyectos de Inteligencia Artificial - Universidad Tecnológica de San Juan del Río</h1>
+                <h1>Blog de los Talleres de Proyectos de Inteligencia Artificial - Universidad Tecnológica de San Juan del Río</h1>
             </header>
             <main>
                 <section>
@@ -71,7 +63,6 @@ function Blog() {
                         </div>
                         <button type="submit">Publicar</button>
                     </form>
-                    {mensaje && <p className={mensaje.startsWith("Error") ? "error" : "mensaje"}>{mensaje}</p>}
                 </section>
                 <section>
                     <h2>Artículos del Blog</h2>
