@@ -1,53 +1,41 @@
 import { NextResponse } from 'next/server';
 import { query } from '@/libs/mysql';
 
-  export async function POST(request) {
+export async function POST(request) {
     try {
-      const { usuario, numExpediente } = await request.json();
-      const result = await query('SELECT * FROM usuarios WHERE usuario = ? AND numExpediente = ?', [usuario, numExpediente]);
-  
-      if (result.length === 0) {
-        return NextResponse.json({ message: 'Usuario o Numero de Expediente incorrectos' }, { status: 401 });
-      }
-  
-      return NextResponse.json({ message: 'Inicio de sesión exitoso' });
+        const formData = await request.formData();
+        const nombre = formData.get('nombre');
+        const apellidos = formData.get('apellidos');
+        const numExpediente = formData.get('numExpediente');
+        const carrera = formData.get('carrera');
+        const cuatrimestre = formData.get('cuatrimestre');
+        const foto = formData.get('foto');
+
+        const [expedienteResult] = await query("SELECT COUNT(*) AS count FROM usuarios WHERE numExpediente = ?", [numExpediente]);
+        if (expedienteResult.count > 0) {
+            return NextResponse.json({ message: 'El número de expediente ya está en uso.' }, { status: 400 });
+        }
+
+        const result = await query("INSERT INTO usuarios SET ?", {
+            nombre,
+            apellidos,
+            numExpediente,
+            carrera,
+            cuatrimestre,
+            foto
+        });
+
+        return NextResponse.json({
+            nombre,
+            apellidos,
+            numExpediente,
+            carrera,
+            cuatrimestre,
+            foto,
+            id: result.insertId,
+        });
     } catch (err) {
-      return NextResponse.json({ message: err.message }, { status: 500 });
+        console.error('Error al procesar la solicitud:', err);
+        return NextResponse.json({ message: 'Error al procesar la solicitud.' }, { status: 500 });
     }
-  }
-  
-  export async function PUT(request) {
-    try {
-      const formData = await request.formData();
-      const usuario = formData.get('usuario');
-      const nombre = formData.get('nombre');
-      const apellidos = formData.get('apellidos');
-      const numExpediente = formData.get('numExpediente');
-      const carrera = formData.get('carrera');
-      const cuatrimestre = formData.get('cuatrimestre');
-      const foto = formData.get('foto');
-      
-      const result = await query("INSERT INTO usuarios SET ?", {
-        usuario,
-        nombre,
-        apellidos,
-        numExpediente,
-        carrera,
-        cuatrimestre,
-        foto
-      });
-  
-      return NextResponse.json({
-        usuario,
-        nombre,
-        apellidos,
-        numExpediente,
-        carrera,
-        cuatrimestre,
-        foto,
-        id: result.insertId,
-      });
-    } catch (err) {
-      return NextResponse.json({ message: err.message }, { status: 500 });
-    }
-  }
+}

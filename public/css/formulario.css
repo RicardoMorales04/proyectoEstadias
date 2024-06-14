@@ -19,6 +19,8 @@ label {
 }
 
 .inputs[type="text"],
+[type="email"],
+[type="password"],
 select,
 .botonRegistro {
     width: 100%;

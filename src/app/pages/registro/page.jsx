@@ -1,12 +1,16 @@
 "use client";
-import "../../../../public/css/formulario.css";
+import "../../../../public/css/formulario.css"
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { createUserWithEmailAndPassword, fetchSignInMethodsForEmail } from 'firebase/auth';
+import { auth } from '../../firebase/config';
 
 function Registro() {
     const [file, setFile] = useState(null);
     const [usuario, setUsuario] = useState({
+        correo: '',
+        password: '',
         usuario: '',
         nombre: '',
         apellidos: '',
@@ -14,8 +18,8 @@ function Registro() {
         carrera: '',
         cuatrimestre: ''
     });
-
-    const params = useParams();
+    const [error, setError] = useState('');
+    const router = useRouter();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -31,35 +35,72 @@ function Registro() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        if (!params.id) {
+        setError('');
+    
+        // Validación de la contraseña
+        if (usuario.password.length < 6) {
+            setError('La contraseña debe tener al menos 6 caracteres.');
+            return;
+        }
+    
+        try {
+            // Verificar si el correo ya existe en Firebase
+            const methods = await fetchSignInMethodsForEmail(auth, usuario.correo);
+            if (methods.length > 0) {
+                setError('El correo electrónico ya está en uso.');
+                return;
+            }
+    
+            // Registrar al usuario en Firebase Authentication
+            const userCredential = await createUserWithEmailAndPassword(auth, usuario.correo, usuario.password);
+            const user = userCredential.user;
+    
+            // Guardar el resto de la información en MySQL
             const formData = new FormData();
-            formData.append('usuario', usuario.usuario)
-            formData.append('nombre', usuario.nombre)
-            formData.append('apellidos', usuario.apellidos)
-            formData.append('numExpediente', usuario.numExpediente)
-            formData.append('carrera', usuario.carrera)
-            formData.append('cuatrimestre', usuario.cuatrimestre)
-            formData.append('foto', file)
-
-            const res = await axios.put("/api/usuarios", formData, {
+            formData.append('correo', usuario.correo);
+            formData.append('nombre', usuario.nombre);
+            formData.append('apellidos', usuario.apellidos);
+            formData.append('numExpediente', usuario.numExpediente);
+            formData.append('carrera', usuario.carrera);
+            formData.append('cuatrimestre', usuario.cuatrimestre);
+            formData.append('foto', file);
+    
+            const res = await axios.post("/api/usuarios", formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-        }
-        else {
-            const res = await axios.put("/api/usuarios" + params.id, usuario)
+    
+            if (res.data.message) {
+                setError(res.data.message);
+                return;
+            }
+    
+            console.log("Respuesta del servidor:", res.data);
+            // Redirigir al usuario a la página de login
+            router.push("http://localhost:3000/pages/login");
+        } catch (err) {
+            console.error('Error al registrar el usuario: ', err);
+    
+            // Verificar el tipo de error específico
+            if (err.response && err.response.data && err.response.data.message) {
+                setError(err.response.data.message); // Mensaje de error desde la API
+            }
         }
     };
+    
 
     return (
         <div className="container">
             <h1 className="tit">REGISTRO</h1>
             <form onSubmit={handleSubmit}>
                 <div>
-                    <label htmlFor="usuario">Usuario:</label>
-                    <input className="inputs" type="text" id="usuario" name="usuario" value={usuario.usuario} onChange={handleChange} required />
+                    <label htmlFor="correo">Correo Electrónico:</label>
+                    <input className="inputs" type="email" id="correo" name="correo" value={usuario.correo} onChange={handleChange} required />
+                </div>
+                <div>
+                    <label htmlFor="password">Contraseña:</label>
+                    <input className="inputs" type="password" id="password" name="password" value={usuario.password} onChange={handleChange} required />
                 </div>
                 <div>
                     <label htmlFor="nombre">Nombre:</label>
@@ -113,6 +154,7 @@ function Registro() {
                     <input className="inputs" type="checkbox" id="terminos" name="terminos" required />
                     <label htmlFor="terminos">Acepto los términos y condiciones</label>
                 </div>
+                {error && <p className="error">{error}</p>}
                 <button type="submit" className="botonRegistro">Registrar</button>
             </form>
         </div>

@@ -10,28 +10,22 @@ function Blog() {
     useEffect(() => {
         const fetchArticulos = async () => {
             try {
-                // Realizar la solicitud GET a la API para obtener los artículos
                 const res = await fetch("/api/blogs");
                 const data = await res.json();
-                setArticulos(data); // Establecer los artículos obtenidos en el estado local
+                setArticulos(data);
             } catch (error) {
                 console.error("Error al obtener los artículos:", error);
-                // Manejar errores de solicitud o procesamiento de datos
             }
         };
 
-        fetchArticulos(); // Llamar a la función de obtención de artículos al montar el componente
-    }, []); // El array vacío como dependencia asegura que se ejecute solo una vez al montarse el componente
+        fetchArticulos();
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            // Código para enviar un nuevo artículo a la API si es necesario
-            // Aquí puedes implementar la lógica para enviar datos al backend
-            // Por ejemplo, utilizando fetch o axios para realizar una solicitud POST
         } catch (error) {
             console.error("Error al publicar el artículo:", error);
-            // Manejar errores de publicación de artículo
         }
     };
 
