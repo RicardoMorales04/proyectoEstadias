@@ -8,11 +8,12 @@ function Blog() {
   const [titulo, setTitulo] = useState("");
   const [contenido, setContenido] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [uid, setUid] = useState(null);
 
   useEffect(() => {
     const fetchArticulos = async () => {
       try {
-        const res = await fetch("/api/blogs");
+        const res = await fetch("/api/blog");
         const data = await res.json();
         setArticulos(data);
       } catch (error) {
@@ -20,9 +21,11 @@ function Blog() {
       }
     };
 
-    const user = Cookies.get('user');
-    if (user) {
+    const userCookie = Cookies.get('user');
+    if (userCookie) {
+      const user = JSON.parse(userCookie);
       setIsLoggedIn(true);
+      setUid(user.uid);
     }
 
     fetchArticulos();
@@ -31,6 +34,26 @@ function Blog() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const res = await fetch("/api/blog", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          titulo,
+          contenido,
+          uid
+        }),
+      });
+
+      if (res.ok) {
+        const nuevoArticulo = await res.json();
+        setArticulos([nuevoArticulo, ...articulos]);
+        setTitulo("");
+        setContenido("");
+      } else {
+        console.error("Error al publicar el artículo:", res.statusText);
+      }
     } catch (error) {
       console.error("Error al publicar el artículo:", error);
     }
@@ -78,7 +101,7 @@ function Blog() {
               <article key={articulo.blog_id}>
                 <header>
                   <h2>{articulo.titulo}</h2>
-                  <p>Por: {articulo.autor} | Publicado el {new Date(articulo.fecha_publicacion).toLocaleDateString()}</p>
+                  <p>Por: {articulo.nombre} {articulo.apellidos} | Publicado el {new Date(articulo.fecha_publicacion).toLocaleDateString()}</p>
                 </header>
                 <p>{articulo.contenido}</p>
               </article>

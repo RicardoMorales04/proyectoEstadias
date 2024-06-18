@@ -131,7 +131,7 @@ export default function Proyectos() {
           </div>
         )
       ) : (
-        <p>Inicia sesión para unirte a un proyecto.</p>
+        <p className="divForm">Inicia sesión para unirte a un proyecto.</p>
       )}
     </>
   );

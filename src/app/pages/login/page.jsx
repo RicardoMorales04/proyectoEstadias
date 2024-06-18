@@ -1,12 +1,10 @@
 "use client";
+import "../../../../public/css/login.css";
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import "../../../../public/css/login.css";
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase/config';
 import Cookies from 'js-cookie';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 function LoginPage() {
   const [email, setEmail] = useState('');
@@ -25,11 +23,7 @@ function LoginPage() {
 
       Cookies.set('user', JSON.stringify({ uid: user.uid, email: user.email }), { expires: 1 });
 
-      console.log('Sign in successful');
-      toast.success('Inicio de sesión exitoso');
-      setTimeout(() => {
-        router.push('/');
-      }, 1500);
+      router.push('/');
     } catch (err) {
       console.error('Error signing in: ', err);
       setError('Error de autenticación. Verifica tus credenciales.');
@@ -62,9 +56,8 @@ function LoginPage() {
         </div>
         {error && <p className="error-message">{error}</p>}
         <button type="submit" className="login-button">Iniciar Sesión</button>
-        <a href="http://localhost:3000/pages/registro">¿No tienes cuenta? Regístrate Aquí</a>
+        <a href="/pages/registro">¿No tienes cuenta? Regístrate Aquí</a>
       </form>
-      <ToastContainer />
     </div>
   );
 }
