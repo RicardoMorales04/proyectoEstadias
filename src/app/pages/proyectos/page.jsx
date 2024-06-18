@@ -7,6 +7,7 @@ export default function Proyectos() {
   const [data, setData] = useState([]);
   const [selectedProject, setSelectedProject] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userProject, setUserProject] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -14,6 +15,22 @@ export default function Proyectos() {
         const response = await fetch('/api/proyectos');
         const result = await response.json();
         setData(result);
+
+        const userCookie = Cookies.get('user');
+        if (userCookie) {
+          const uid = JSON.parse(userCookie).uid;
+          const userResponse = await fetch('/api/proyectos', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ uid }),
+          });
+          const userResult = await userResponse.json();
+          if (userResult.proyecto) {
+            setUserProject(userResult.proyecto);
+          }
+        }
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -55,6 +72,7 @@ export default function Proyectos() {
         if (response.ok) {
           console.log('Inscripción exitosa:', proyectoSeleccionado.proyecto_id);
           alert('Te has inscrito exitosamente en el proyecto.');
+          setUserProject(proyectoSeleccionado.proyecto_nombre);
         } else {
           console.error('Error al inscribirse en el proyecto.');
           alert('Hubo un problema al inscribirse en el proyecto. Por favor, inténtalo de nuevo.');
@@ -96,18 +114,22 @@ export default function Proyectos() {
         </table>
       </div>
       {isLoggedIn ? (
-        <div className="divForm">
-          <form onSubmit={handleSubmit}>
-            <label htmlFor="seleccion">¿Quieres unirte a un proyecto? Selecciona el que más te llamó la atención</label><br></br>
-            <select id="seleccion" name="seleccion" value={selectedProject} onChange={handleSelectChange} required>
-              <option value="" disabled>Selecciona un proyecto</option>
-              {data.map((proyecto) => (
-                <option key={proyecto.proyecto_id} value={proyecto.proyecto_id}>{proyecto.proyecto_nombre}</option>
-              ))}
-            </select>
-            <button type="submit" className="botonRegistro">Unirme</button>
-          </form>
-        </div>
+        userProject ? (
+          <p className="divForm">Ya estás inscrito en el proyecto: {userProject}</p>
+        ) : (
+          <div className="divForm">
+            <form onSubmit={handleSubmit}>
+              <label htmlFor="seleccion">¿Quieres unirte a un proyecto? Selecciona el que más te llamó la atención</label><br></br>
+              <select id="seleccion" name="seleccion" value={selectedProject} onChange={handleSelectChange} required>
+                <option value="" disabled>Selecciona un proyecto</option>
+                {data.map((proyecto) => (
+                  <option key={proyecto.proyecto_id} value={proyecto.proyecto_id}>{proyecto.proyecto_nombre}</option>
+                ))}
+              </select>
+              <button type="submit" className="botonRegistro">Unirme</button>
+            </form>
+          </div>
+        )
       ) : (
         <p>Inicia sesión para unirte a un proyecto.</p>
       )}
