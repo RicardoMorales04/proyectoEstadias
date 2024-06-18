@@ -4,6 +4,9 @@ import { useRouter } from 'next/navigation';
 import "../../../../public/css/login.css";
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase/config';
+import Cookies from 'js-cookie';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function LoginPage() {
   const [email, setEmail] = useState('');
@@ -14,18 +17,24 @@ function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-  
+
     try {
       console.log('Trying to sign in with:', email, password);
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      Cookies.set('user', JSON.stringify({ uid: user.uid, email: user.email }), { expires: 1 });
+
       console.log('Sign in successful');
-      router.push('/');
+      toast.success('Inicio de sesión exitoso');
+      setTimeout(() => {
+        router.push('/');
+      }, 1500);
     } catch (err) {
       console.error('Error signing in: ', err);
       setError('Error de autenticación. Verifica tus credenciales.');
     }
   };
-  
 
   return (
     <div className="login-container">
@@ -55,6 +64,7 @@ function LoginPage() {
         <button type="submit" className="login-button">Iniciar Sesión</button>
         <a href="http://localhost:3000/pages/registro">¿No tienes cuenta? Regístrate Aquí</a>
       </form>
+      <ToastContainer />
     </div>
   );
 }

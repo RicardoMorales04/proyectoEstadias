@@ -36,27 +36,24 @@ function Registro() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
-    
-        // Validación de la contraseña
+
         if (usuario.password.length < 6) {
             setError('La contraseña debe tener al menos 6 caracteres.');
             return;
         }
-    
+
         try {
-            // Verificar si el correo ya existe en Firebase
             const methods = await fetchSignInMethodsForEmail(auth, usuario.correo);
             if (methods.length > 0) {
                 setError('El correo electrónico ya está en uso.');
                 return;
             }
-    
-            // Registrar al usuario en Firebase Authentication
+
             const userCredential = await createUserWithEmailAndPassword(auth, usuario.correo, usuario.password);
             const user = userCredential.user;
-    
-            // Guardar el resto de la información en MySQL
+
             const formData = new FormData();
+            formData.append('uid', user.uid);
             formData.append('correo', usuario.correo);
             formData.append('nombre', usuario.nombre);
             formData.append('apellidos', usuario.apellidos);
@@ -64,31 +61,28 @@ function Registro() {
             formData.append('carrera', usuario.carrera);
             formData.append('cuatrimestre', usuario.cuatrimestre);
             formData.append('foto', file);
-    
+
             const res = await axios.post("/api/usuarios", formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-    
+
             if (res.data.message) {
                 setError(res.data.message);
                 return;
             }
-    
+
             console.log("Respuesta del servidor:", res.data);
-            // Redirigir al usuario a la página de login
             router.push("http://localhost:3000/pages/login");
         } catch (err) {
             console.error('Error al registrar el usuario: ', err);
-    
-            // Verificar el tipo de error específico
+
             if (err.response && err.response.data && err.response.data.message) {
-                setError(err.response.data.message); // Mensaje de error desde la API
+                setError(err.response.data.message);
             }
         }
     };
-    
 
     return (
         <div className="container">

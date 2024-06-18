@@ -4,6 +4,7 @@ import { query } from '@/libs/mysql';
 export async function POST(request) {
     try {
         const formData = await request.formData();
+        const uid = formData.get('uid');
         const nombre = formData.get('nombre');
         const apellidos = formData.get('apellidos');
         const numExpediente = formData.get('numExpediente');
@@ -17,6 +18,7 @@ export async function POST(request) {
         }
 
         const result = await query("INSERT INTO usuarios SET ?", {
+            uid,
             nombre,
             apellidos,
             numExpediente,
@@ -26,6 +28,7 @@ export async function POST(request) {
         });
 
         return NextResponse.json({
+            uid,
             nombre,
             apellidos,
             numExpediente,

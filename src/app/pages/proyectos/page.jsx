@@ -1,10 +1,12 @@
 "use client";
 import "../../../../public/css/proyectos.css";
 import { useState, useEffect } from 'react';
+import Cookies from 'js-cookie';
 
 export default function Proyectos() {
   const [data, setData] = useState([]);
   const [selectedProject, setSelectedProject] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -17,6 +19,10 @@ export default function Proyectos() {
       }
     };
 
+    const user = Cookies.get('user');
+    if (user) {
+      setIsLoggedIn(true);
+    }
     fetchData();
   }, []);
 
@@ -24,11 +30,39 @@ export default function Proyectos() {
     setSelectedProject(event.target.value);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     if (selectedProject) {
-      // Aquí puedes agregar la lógica para unirte al proyecto seleccionado
-      console.log('Proyecto seleccionado:', selectedProject);
+      try {
+        const proyectoSeleccionado = data.find(proyecto => proyecto.proyecto_id === parseInt(selectedProject));
+        if (!proyectoSeleccionado) {
+          alert('El proyecto seleccionado no es válido.');
+          return;
+        }
+
+        const userCookie = Cookies.get('user');
+        const uid = JSON.parse(userCookie).uid;
+        console.log('Seleccionado:', proyectoSeleccionado.proyecto_id, 'Usuario:', uid);
+
+        const response = await fetch('/api/inscribirse', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ proyecto_id: proyectoSeleccionado.proyecto_id, uid }),
+        });
+
+        if (response.ok) {
+          console.log('Inscripción exitosa:', proyectoSeleccionado.proyecto_id);
+          alert('Te has inscrito exitosamente en el proyecto.');
+        } else {
+          console.error('Error al inscribirse en el proyecto.');
+          alert('Hubo un problema al inscribirse en el proyecto. Por favor, inténtalo de nuevo.');
+        }
+      } catch (error) {
+        console.error('Error en la solicitud de inscripción:', error);
+        alert('Hubo un problema al inscribirse en el proyecto. Por favor, inténtalo de nuevo.');
+      }
     } else {
       alert('Por favor, selecciona un proyecto.');
     }
@@ -61,19 +95,22 @@ export default function Proyectos() {
           </tbody>
         </table>
       </div>
-      <div className="divForm">
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="seleccion">¿Quieres unirte a un proyecto? Selecciona el que más te llamó la atención</label><br></br>
-          <select id="seleccion" name="seleccion" value={selectedProject} onChange={handleSelectChange} required>
-            <option value="" disabled>Selecciona un proyecto</option>
-            {data.map((proyecto) => (
-              <option key={proyecto.proyecto_id} value={proyecto.proyecto_nombre}>{proyecto.proyecto_nombre}</option>
-            ))}
-          </select>
-          <button type="submit" className="botonRegistro">Unirme</button>
-        </form>
-      </div>
+      {isLoggedIn ? (
+        <div className="divForm">
+          <form onSubmit={handleSubmit}>
+            <label htmlFor="seleccion">¿Quieres unirte a un proyecto? Selecciona el que más te llamó la atención</label><br></br>
+            <select id="seleccion" name="seleccion" value={selectedProject} onChange={handleSelectChange} required>
+              <option value="" disabled>Selecciona un proyecto</option>
+              {data.map((proyecto) => (
+                <option key={proyecto.proyecto_id} value={proyecto.proyecto_id}>{proyecto.proyecto_nombre}</option>
+              ))}
+            </select>
+            <button type="submit" className="botonRegistro">Unirme</button>
+          </form>
+        </div>
+      ) : (
+        <p>Inicia sesión para unirte a un proyecto.</p>
+      )}
     </>
   );
 }
-
