@@ -1,5 +1,5 @@
 "use client";
-import "../../../../public/css/formulario.css"
+import "../../../../public/css/formulario.css";
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from "next/navigation";
@@ -75,6 +75,9 @@ function Registro() {
             formData.append('cuatrimestre', usuario.cuatrimestre);
             formData.append('foto', file);
 
+            // Corrección: eliminar la referencia no definida
+            // console.log(foto);
+
             const res = await axios.post("/api/usuarios", formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
@@ -87,7 +90,7 @@ function Registro() {
             }
 
             console.log("Respuesta del servidor:", res.data);
-            router.push("http://localhost:3000/pages/login");
+            router.push("/pages/login");
         } catch (err) {
             console.error('Error al registrar el usuario: ', err);
 
@@ -118,8 +121,8 @@ function Registro() {
                     <input className="inputs" type="text" id="apellidos" name="apellidos" value={usuario.apellidos} onChange={handleChange} required />
                 </div>
                 <div>
-                <label htmlFor="numExpediente">Número de Expediente:</label>
-                <input className="inputs" type="text" maxLength="10" id="numExpediente" name="numExpediente" value={usuario.numExpediente} onChange={handleChange} onInput={(e) => {e.target.value = e.target.value.replace(/[^0-9]/g, '');}} required />
+                    <label htmlFor="numExpediente">Número de Expediente:</label>
+                    <input className="inputs" type="text" maxLength="10" id="numExpediente" name="numExpediente" value={usuario.numExpediente} onChange={handleChange} onInput={(e) => {e.target.value = e.target.value.replace(/[^0-9]/g, '');}} required />
                 </div>
                 <div>
                     <label htmlFor="carrera">Carrera:</label>

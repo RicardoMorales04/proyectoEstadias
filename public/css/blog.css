@@ -1,5 +1,5 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
     background-color: #f4f4f4;
     color: #333;
     margin: 0;
@@ -9,16 +9,19 @@ body {
 .blog {
     max-width: 800px;
     margin: 2rem auto;
-    padding: 1rem;
+    padding: 2rem;
     background: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 header h1 {
-    font-size: 2rem;
+    font-size: 2.5rem;
     color: #002855;
     text-align: center;
     margin-bottom: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 main {
@@ -26,9 +29,9 @@ main {
 }
 
 section h2 {
-    font-size: 1.5rem;
+    font-size: 2rem;
     color: #00A789;
-    border-bottom: 2px solid #00A789;
+    border-bottom: 3px solid #00A789;
     padding-bottom: 0.5rem;
     margin-bottom: 1.5rem;
 }
@@ -52,15 +55,23 @@ form input[type="text"],
 form textarea,
 form select {
     width: 100%;
-    padding: 0.5rem;
+    padding: 0.75rem;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+form input[type="text"]:focus,
+form textarea:focus,
+form select:focus {
+    border-color: #00A789;
+    outline: none;
 }
 
 form textarea {
     resize: vertical;
-    height: 100px;
+    height: 150px;
 }
 
 form button {
@@ -80,12 +91,12 @@ form button:hover {
 
 article {
     margin-bottom: 2rem;
-    padding: 1rem;
+    padding: 2rem;
     border-bottom: 1px solid #eee;
 }
 
 article header h2 {
-    font-size: 1.25rem;
+    font-size: 1.75rem;
     margin-bottom: 0.5rem;
     color: #002855;
 }
@@ -122,3 +133,11 @@ p.error {
     font-weight: bold;
     color: #dc3545;
 }
+
+.foto-perfil {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+}
+
+  

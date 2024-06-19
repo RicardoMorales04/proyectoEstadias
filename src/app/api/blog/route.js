@@ -6,7 +6,7 @@ export async function GET() {
   try {
     const articles = await query(`
       SELECT blog.blog_id, blog.titulo, blog.contenido, blog.fecha_publicacion, 
-             usuarios.nombre, usuarios.apellidos
+             usuarios.nombre, usuarios.apellidos, usuarios.foto
       FROM blog
       JOIN usuarios ON blog.usuario_id = usuarios.usuario_id
       ORDER BY blog.fecha_publicacion DESC
@@ -42,7 +42,7 @@ export async function POST(req) {
     // Obtener el nuevo artículo con la información del autor
     const newArticle = await query(`
       SELECT blog.blog_id, blog.titulo, blog.contenido, blog.fecha_publicacion, 
-             usuarios.nombre, usuarios.apellidos
+             usuarios.nombre, usuarios.apellidos, usuarios.foto
       FROM blog
       JOIN usuarios ON blog.usuario_id = usuarios.usuario_id
       WHERE blog.blog_id = ?

@@ -92,18 +92,22 @@ function Blog() {
         ) : (
           <p>Inicia sesión para publicar un artículo.</p>
         )}
+        <br />
         <section>
           <h2>Artículos del Blog</h2>
           {articulos.length === 0 ? (
             <p>No hay artículos publicados.</p>
           ) : (
             articulos.map((articulo) => (
-              <article key={articulo.blog_id}>
+              <article key={articulo.blog_id} className="articulo">
                 <header>
                   <h2>{articulo.titulo}</h2>
-                  <p>Por: {articulo.nombre} {articulo.apellidos} | Publicado el {new Date(articulo.fecha_publicacion).toLocaleDateString()}</p>
+                  <p>{articulo.foto && (
+                    <img src={articulo.foto} className="foto-perfil" />
+                  )} Por: {articulo.nombre} {articulo.apellidos}</p>
                 </header>
                 <p>{articulo.contenido}</p>
+                <p>Publicado el {new Date(articulo.fecha_publicacion).toLocaleDateString()}</p>
               </article>
             ))
           )}
