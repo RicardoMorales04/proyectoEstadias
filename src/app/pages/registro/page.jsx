@@ -11,7 +11,6 @@ function Registro() {
     const [usuario, setUsuario] = useState({
         correo: '',
         password: '',
-        usuario: '',
         nombre: '',
         apellidos: '',
         numExpediente: '',
@@ -37,12 +36,27 @@ function Registro() {
         e.preventDefault();
         setError('');
 
+        // Verificar que todos los campos estén completos
+        const camposCompletos = Object.values(usuario).every(campo => campo !== '') && file !== null;
+
+        if (!camposCompletos) {
+            setError('Todos los campos deben estar completos.');
+            return;
+        }
+
         if (usuario.password.length < 6) {
             setError('La contraseña debe tener al menos 6 caracteres.');
             return;
         }
 
         try {
+            // Verificar si el número de expediente ya existe
+            const expedienteRes = await axios.post("/api/usuarios/verificarExpediente", { numExpediente: usuario.numExpediente });
+            if (expedienteRes.data.exists) {
+                setError('El número de expediente ya está registrado.');
+                return;
+            }
+
             const methods = await fetchSignInMethodsForEmail(auth, usuario.correo);
             if (methods.length > 0) {
                 setError('El correo electrónico ya está en uso.');
@@ -54,7 +68,6 @@ function Registro() {
 
             const formData = new FormData();
             formData.append('uid', user.uid);
-            formData.append('correo', usuario.correo);
             formData.append('nombre', usuario.nombre);
             formData.append('apellidos', usuario.apellidos);
             formData.append('numExpediente', usuario.numExpediente);
@@ -105,8 +118,8 @@ function Registro() {
                     <input className="inputs" type="text" id="apellidos" name="apellidos" value={usuario.apellidos} onChange={handleChange} required />
                 </div>
                 <div>
-                    <label htmlFor="numExpediente">Número de Expediente:</label>
-                    <input className="inputs" type="text" id="numExpediente" name="numExpediente" value={usuario.numExpediente} onChange={handleChange} required />
+                <label htmlFor="numExpediente">Número de Expediente:</label>
+                <input className="inputs" type="text" maxLength="10" id="numExpediente" name="numExpediente" value={usuario.numExpediente} onChange={handleChange} onInput={(e) => {e.target.value = e.target.value.replace(/[^0-9]/g, '');}} required />
                 </div>
                 <div>
                     <label htmlFor="carrera">Carrera:</label>
@@ -139,7 +152,7 @@ function Registro() {
                     </select>
                 </div>
                 <div>
-                    <input type="file" onChange={handleFileChange} />
+                    <input type="file" onChange={handleFileChange} required />
                     <div className="imagenCarga">
                         {file && <img src={URL.createObjectURL(file)} alt="Imagen Cargada" />}
                     </div>

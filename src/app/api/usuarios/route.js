@@ -12,11 +12,6 @@ export async function POST(request) {
         const cuatrimestre = formData.get('cuatrimestre');
         const foto = formData.get('foto');
 
-        const [expedienteResult] = await query("SELECT COUNT(*) AS count FROM usuarios WHERE numExpediente = ?", [numExpediente]);
-        if (expedienteResult.count > 0) {
-            return NextResponse.json({ message: 'El número de expediente ya está en uso.' }, { status: 400 });
-        }
-
         const result = await query("INSERT INTO usuarios SET ?", {
             uid,
             nombre,

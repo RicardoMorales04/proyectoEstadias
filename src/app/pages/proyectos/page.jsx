@@ -61,7 +61,7 @@ export default function Proyectos() {
         const uid = JSON.parse(userCookie).uid;
         console.log('Seleccionado:', proyectoSeleccionado.proyecto_id, 'Usuario:', uid);
 
-        const response = await fetch('/api/inscribirse', {
+        const response = await fetch('/api/proyectos/inscribirse', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
