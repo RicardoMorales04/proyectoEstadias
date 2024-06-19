@@ -15,7 +15,12 @@ function Blog() {
       try {
         const res = await fetch("/api/blog");
         const data = await res.json();
-        setArticulos(data);
+        // Verificar si data es un array antes de actualizar el estado
+        if (Array.isArray(data)) {
+          setArticulos(data);
+        } else {
+          console.error("La respuesta de la API no es un array:", data);
+        }
       } catch (error) {
         console.error("Error al obtener los artículos:", error);
       }
@@ -48,6 +53,7 @@ function Blog() {
 
       if (res.ok) {
         const nuevoArticulo = await res.json();
+        // Actualizar articulos asegurándose de que siempre es un array
         setArticulos([nuevoArticulo, ...articulos]);
         setTitulo("");
         setContenido("");
@@ -95,21 +101,22 @@ function Blog() {
         <br />
         <section>
           <h2>Artículos del Blog</h2>
-          {articulos.length === 0 ? (
-            <p>No hay artículos publicados.</p>
-          ) : (
+          {/* Verificar si articulos es un array y tiene elementos */}
+          {Array.isArray(articulos) && articulos.length > 0 ? (
             articulos.map((articulo) => (
               <article key={articulo.blog_id} className="articulo">
                 <header>
                   <h2>{articulo.titulo}</h2>
                   <p>{articulo.foto && (
-                    <img src={articulo.foto} className="foto-perfil" />
+                    <img src={articulo.foto} className="foto-perfil" alt="Foto de perfil" />
                   )} Por: {articulo.nombre} {articulo.apellidos}</p>
                 </header>
                 <p>{articulo.contenido}</p>
                 <p>Publicado el {new Date(articulo.fecha_publicacion).toLocaleDateString()}</p>
               </article>
             ))
+          ) : (
+            <p>No hay artículos publicados.</p>
           )}
         </section>
       </main>
