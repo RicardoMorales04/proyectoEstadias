@@ -14,10 +14,16 @@ export default function Proyectos() {
       try {
         const response = await fetch('/api/proyectos');
         const result = await response.json();
-        setData(result);
+        // Verificar si result es un array antes de actualizar el estado
+        if (Array.isArray(result)) {
+          setData(result);
+        } else {
+          console.error("La respuesta de la API no es un array:", result);
+        }
 
         const userCookie = Cookies.get('user');
         if (userCookie) {
+          setIsLoggedIn(true);
           const uid = JSON.parse(userCookie).uid;
           const userResponse = await fetch('/api/proyectos', {
             method: 'POST',
@@ -28,7 +34,7 @@ export default function Proyectos() {
           });
           const userResult = await userResponse.json();
           if (userResult.proyecto) {
-            setUserProject(userResult.proyecto);
+            setUserProject(userResult.proyecto.proyecto_nombre);
           }
         }
       } catch (error) {
@@ -59,7 +65,6 @@ export default function Proyectos() {
 
         const userCookie = Cookies.get('user');
         const uid = JSON.parse(userCookie).uid;
-        console.log('Seleccionado:', proyectoSeleccionado.proyecto_id, 'Usuario:', uid);
 
         const response = await fetch('/api/proyectos/inscribirse', {
           method: 'POST',
@@ -101,15 +106,22 @@ export default function Proyectos() {
             </tr>
           </thead>
           <tbody>
-            {data.map((proyecto) => (
-              <tr key={proyecto.proyecto_id}>
-                <td>{proyecto.profesor_nombre} {proyecto.profesor_apellidos}</td>
-                <td>{proyecto.proyecto_nombre}</td>
-                <td>{proyecto.descripcion}</td>
-                <td>{proyecto.horario}</td>
-                <td><a href={`/pages/registrados/${proyecto.proyecto_id}`}>Integrantes</a></td>
+            {/* Verificar si data es un array y tiene elementos */}
+            {Array.isArray(data) && data.length > 0 ? (
+              data.map((proyecto) => (
+                <tr key={proyecto.proyecto_id}>
+                  <td>{proyecto.profesor_nombre} {proyecto.profesor_apellidos}</td>
+                  <td>{proyecto.proyecto_nombre}</td>
+                  <td>{proyecto.descripcion}</td>
+                  <td>{proyecto.horario}</td>
+                  <td><a href={`/pages/registrados/${proyecto.proyecto_id}`}>Integrantes</a></td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="5">No hay proyectos disponibles.</td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>
