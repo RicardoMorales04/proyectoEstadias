@@ -15,7 +15,6 @@ function Blog() {
       try {
         const res = await fetch("/api/blog");
         const data = await res.json();
-        // Verificar si data es un array antes de actualizar el estado
         if (Array.isArray(data)) {
           setArticulos(data);
         } else {
@@ -53,7 +52,6 @@ function Blog() {
 
       if (res.ok) {
         const nuevoArticulo = await res.json();
-        // Actualizar articulos asegurándose de que siempre es un array
         setArticulos([nuevoArticulo, ...articulos]);
         setTitulo("");
         setContenido("");
@@ -101,7 +99,6 @@ function Blog() {
         <br />
         <section>
           <h2>Artículos del Blog</h2>
-          {/* Verificar si articulos es un array y tiene elementos */}
           {Array.isArray(articulos) && articulos.length > 0 ? (
             articulos.map((articulo) => (
               <article key={articulo.blog_id} className="articulo">

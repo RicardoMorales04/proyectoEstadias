@@ -1,23 +1,21 @@
 'use client';
 import '../../../../../public/css/registrados.css';
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { useParams } from 'next/navigation';
 
 const Registrados = () => {
-  const router = useRouter();
-  const { id } = router.query; // Utilizamos useRouter en lugar de useParams para Next.js
+  const { id } = useParams();
   const [usuarios, setUsuarios] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (!id) return; // Salir temprano si id no está definido
+        if (!id) return;
 
         console.log(id);
         const response = await fetch(`/api/registrados/${id}`);
         const result = await response.json();
 
-        // Verificar si result es un array antes de actualizar el estado
         if (Array.isArray(result)) {
           setUsuarios(result);
         } else {
@@ -43,7 +41,6 @@ const Registrados = () => {
           </tr>
         </thead>
         <tbody>
-          {/* Verificar si usuarios es un array y tiene elementos */}
           {Array.isArray(usuarios) && usuarios.length > 0 ? (
             usuarios.map((usuario) => (
               <tr key={usuario.usuario_id}>

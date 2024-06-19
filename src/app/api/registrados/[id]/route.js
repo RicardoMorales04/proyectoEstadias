@@ -1,4 +1,3 @@
-// /src/app/api/registrados/[id]/route.js
 import { query } from '@/libs/mysql';
 import { NextResponse } from 'next/server';
 

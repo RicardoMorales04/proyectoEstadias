@@ -36,7 +36,6 @@ function Registro() {
         e.preventDefault();
         setError('');
 
-        // Verificar que todos los campos estén completos
         const camposCompletos = Object.values(usuario).every(campo => campo !== '') && file !== null;
 
         if (!camposCompletos) {
@@ -50,7 +49,6 @@ function Registro() {
         }
 
         try {
-            // Verificar si el número de expediente ya existe
             const expedienteRes = await axios.post("/api/usuarios/verificarExpediente", { numExpediente: usuario.numExpediente });
             if (expedienteRes.data.exists) {
                 setError('El número de expediente ya está registrado.');
@@ -74,9 +72,6 @@ function Registro() {
             formData.append('carrera', usuario.carrera);
             formData.append('cuatrimestre', usuario.cuatrimestre);
             formData.append('foto', file);
-
-            // Corrección: eliminar la referencia no definida
-            // console.log(foto);
 
             const res = await axios.post("/api/usuarios", formData, {
                 headers: {

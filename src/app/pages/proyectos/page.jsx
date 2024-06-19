@@ -14,7 +14,6 @@ export default function Proyectos() {
       try {
         const response = await fetch('/api/proyectos');
         const result = await response.json();
-        // Verificar si result es un array antes de actualizar el estado
         if (Array.isArray(result)) {
           setData(result);
         } else {
@@ -106,7 +105,6 @@ export default function Proyectos() {
             </tr>
           </thead>
           <tbody>
-            {/* Verificar si data es un array y tiene elementos */}
             {Array.isArray(data) && data.length > 0 ? (
               data.map((proyecto) => (
                 <tr key={proyecto.proyecto_id}>

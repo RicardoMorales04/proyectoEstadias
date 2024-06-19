@@ -1,7 +1,6 @@
 import { query } from '@/libs/mysql';
 import { NextResponse } from 'next/server';
 
-// Obtener artículos
 export async function GET() {
   try {
     const articles = await query(`
@@ -17,12 +16,10 @@ export async function GET() {
   }
 }
 
-// Publicar un nuevo artículo
 export async function POST(req) {
   const { titulo, contenido, uid } = await req.json();
 
   try {
-    // Obtener el usuario_id basado en el uid
     const usuario = await query(`
       SELECT usuario_id FROM usuarios WHERE uid = ?
     `, [uid]);
@@ -33,13 +30,11 @@ export async function POST(req) {
 
     const usuario_id = usuario[0].usuario_id;
 
-    // Insertar el nuevo artículo
     const result = await query(`
       INSERT INTO blog (titulo, contenido, usuario_id)
       VALUES (?, ?, ?)
     `, [titulo, contenido, usuario_id]);
 
-    // Obtener el nuevo artículo con la información del autor
     const newArticle = await query(`
       SELECT blog.blog_id, blog.titulo, blog.contenido, blog.fecha_publicacion, 
              usuarios.nombre, usuarios.apellidos, usuarios.foto
