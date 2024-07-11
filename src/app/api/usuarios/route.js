@@ -45,6 +45,12 @@ export async function POST(request) {
             RETURNING usuario_id;
         `;
 
+        console.log('SQL result:', result);
+
+        if (!result || !result.rows || result.rows.length === 0) {
+            throw new Error('Error retrieving inserted user');
+        }
+
         return NextResponse.json({
             uid,
             nombre,
@@ -53,7 +59,7 @@ export async function POST(request) {
             carrera,
             cuatrimestre,
             foto: fotoUrl,
-            id: result[0].usuario_id,
+            id: result.rows[0].usuario_id,
         });
     } catch (err) {
         console.error('Error al procesar la solicitud:', err);
