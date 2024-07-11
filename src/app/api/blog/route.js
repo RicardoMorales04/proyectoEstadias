@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
     try {
-        const articles = await sql`
+        const { rows: articles } = await sql`
             SELECT blog.blog_id, blog.titulo, blog.contenido, blog.fecha_publicacion, 
                    usuarios.nombre, usuarios.apellidos, usuarios.foto
             FROM blog
@@ -20,7 +20,7 @@ export async function POST(req) {
     const { titulo, contenido, uid } = await req.json();
 
     try {
-        const usuario = await sql`
+        const { rows: usuario } = await sql`
             SELECT usuario_id FROM usuarios WHERE uid = ${uid};
         `;
 
@@ -30,7 +30,7 @@ export async function POST(req) {
 
         const usuario_id = usuario[0].usuario_id;
 
-        const result = await sql`
+        const { rows: result } = await sql`
             INSERT INTO blog (titulo, contenido, usuario_id)
             VALUES (${titulo}, ${contenido}, ${usuario_id})
             RETURNING blog_id, titulo, contenido, fecha_publicacion;

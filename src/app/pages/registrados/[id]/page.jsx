@@ -45,7 +45,7 @@ const Registrados = () => {
             usuarios.map((usuario) => (
               <tr key={usuario.usuario_id}>
                 <td>{usuario.nombre} {usuario.apellidos}</td>
-                <td>{usuario.numExpediente}</td>
+                <td>{usuario.numexpediente}</td>
                 <td>{usuario.carrera}</td>
               </tr>
             ))

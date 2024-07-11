@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
     try {
-        const proyectos = await sql`
+        const { rows: proyectos } = await sql`
             SELECT p.proyecto_id, p.nombre AS proyecto_nombre, p.descripcion, p.horario, 
                    pr.nombre AS profesor_nombre, pr.apellidos AS profesor_apellidos 
             FROM proyectos p 
@@ -23,7 +23,7 @@ export async function POST(request) {
     }
 
     try {
-        const result = await sql`
+        const { rows: result } = await sql`
             SELECT p.nombre AS proyecto_nombre 
             FROM usuarios u 
             JOIN proyectos p ON u.proyecto_id = p.proyecto_id 
@@ -31,7 +31,7 @@ export async function POST(request) {
         `;
 
         if (result.length > 0) {
-            return NextResponse.json({ proyecto: result[0].proyecto_nombre });
+            return NextResponse.json({ proyecto: result[0] });
         } else {
             return NextResponse.json({ proyecto: null });
         }

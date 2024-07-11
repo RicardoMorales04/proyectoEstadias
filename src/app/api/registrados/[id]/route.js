@@ -9,7 +9,7 @@ export async function GET(req, { params }) {
             throw new Error('ID is missing in route parameters');
         }
 
-        const usuarios = await sql`
+        const { rows: usuarios } = await sql`
             SELECT 
                 u.usuario_id, u.nombre, u.apellidos, u.numExpediente, u.carrera, u.cuatrimestre, u.fecha_inscripcion 
             FROM usuarios u 
