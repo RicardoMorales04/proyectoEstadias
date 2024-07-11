@@ -1,11 +1,13 @@
 import { NextResponse } from 'next/server';
-import { query } from '@/libs/mysql';
+import { sql } from '@vercel/postgres';
 
 export async function POST(request) {
     try {
         const { numExpediente } = await request.json();
 
-        const result = await query("SELECT * FROM usuarios WHERE numExpediente = ?", [numExpediente]);
+        const result = await sql`
+            SELECT * FROM usuarios WHERE numExpediente = ${numExpediente};
+        `;
 
         if (result.length > 0) {
             return NextResponse.json({ exists: true });

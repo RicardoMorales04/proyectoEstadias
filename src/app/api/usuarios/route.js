@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { query } from '@/libs/mysql';
+import { sql } from '@vercel/postgres';
 import cloudinary from '../../../../cloudinary';
 
 export async function POST(request) {
@@ -39,15 +39,11 @@ export async function POST(request) {
 
         const fotoUrl = uploadResponse.secure_url;
 
-        const result = await query("INSERT INTO usuarios SET ?", {
-            uid,
-            nombre,
-            apellidos,
-            numExpediente,
-            carrera,
-            cuatrimestre,
-            foto: fotoUrl
-        });
+        const result = await sql`
+            INSERT INTO usuarios (uid, nombre, apellidos, numExpediente, carrera, cuatrimestre, foto)
+            VALUES (${uid}, ${nombre}, ${apellidos}, ${numExpediente}, ${carrera}, ${cuatrimestre}, ${fotoUrl})
+            RETURNING usuario_id;
+        `;
 
         return NextResponse.json({
             uid,
@@ -57,7 +53,7 @@ export async function POST(request) {
             carrera,
             cuatrimestre,
             foto: fotoUrl,
-            id: result.insertId,
+            id: result[0].usuario_id,
         });
     } catch (err) {
         console.error('Error al procesar la solicitud:', err);

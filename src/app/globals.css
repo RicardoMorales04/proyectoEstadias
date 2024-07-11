@@ -193,3 +193,88 @@ body {
 .aviso-privacidad a:hover {
     text-decoration: none !important;
 }
+
+/* Estilos para el nav con class="mostrar" */
+.mostrar {
+  position: fixed;
+  top: 0;
+  left: -300px; /* El menú está oculto inicialmente */
+  width: 300px;
+  height: 100%;
+  background-color: #004080; /* Color de fondo */
+  overflow-x: hidden;
+  transition: 0.3s; /* Transición para el desplazamiento */
+  padding-top: 20px;
+  z-index: 1000;
+}
+
+.mostrar.open {
+  left: 0; /* Muestra el menú */
+}
+
+.mostrar_flex {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 10px;
+}
+
+.mostrar_flex svg {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  color: white;
+}
+
+.accesos_principales {
+  margin-top: 20px;
+}
+
+.accesos_principales .accordion2 {
+  list-style: none;
+  padding: 0;
+}
+
+.accesos_principales .accordion2 li {
+  margin-bottom: 10px;
+}
+
+.accesos_principales .accordion2 .link2 {
+  background-color: #0056b3; /* Color del botón */
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #003366; /* Borde */
+  transition: background-color 0.3s;
+}
+
+.accesos_principales .accordion2 .link2:hover {
+  background-color: #003366;
+}
+
+.accesos_principales .accordion2 .submenu2 {
+  display: none;
+  list-style: none;
+  padding: 0;
+  margin-top: 5px;
+}
+
+.accesos_principales .accordion2 .submenu2 li {
+  margin: 5px 0;
+}
+
+.accesos_principales .accordion2 .submenu2 li a {
+  color: white;
+  text-decoration: none;
+  padding: 5px 10px;
+  display: block;
+  transition: background-color 0.3s;
+}
+
+.accesos_principales .accordion2 .submenu2 li a:hover {
+  background-color: #0056b3;
+}
