@@ -6,14 +6,16 @@ export async function GET(req, { params }) {
         const { id } = params;
 
         if (!id) {
-            throw new Error('ID is missing in route parameters');
+            return NextResponse.json({ error: 'ID is missing in route parameters' }, { status: 400 });
         }
+
+        const proyectoId = String(id);
 
         const { rows: usuarios } = await sql`
             SELECT 
-                u.usuario_id, u.nombre, u.apellidos, u.numExpediente, u.carrera, u.cuatrimestre, u.fecha_inscripcion 
-            FROM usuarios u 
-            WHERE u.proyecto_id = ${id};
+                usuario_id, nombre, apellidos, numexpediente, carrera, cuatrimestre, fecha_inscripcion 
+            FROM usuarios 
+            WHERE proyecto_id = ${proyectoId};
         `;
 
         return NextResponse.json(usuarios);

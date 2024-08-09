@@ -38,7 +38,7 @@ a:hover {
     color: #0056b3;
 }
 
-.tit{
+.tit {
     text-align: center;
 }
 
@@ -54,13 +54,20 @@ a:hover {
     color: white;
 }
 
+.divForm h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #ffffff;
+}
+
 .divForm label {
     display: block;
     margin-bottom: 8px;
     font-weight: bold;
 }
 
-.divForm select, .divForm button {
+.divForm input, .divForm select, .divForm button {
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;

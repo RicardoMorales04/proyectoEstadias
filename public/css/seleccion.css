@@ -1,0 +1,53 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.seleccion-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #002855;
+  color: #ffffff;
+}
+
+.seleccion-title {
+  font-size: 32px;
+  margin-bottom: 40px;
+}
+
+.button-group {
+  display: flex;
+  gap: 20px;
+}
+
+.seleccion-button {
+  padding: 15px 30px;
+  font-size: 18px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.profesor-button {
+  background-color: #00A789;
+  color: #ffffff;
+}
+
+.profesor-button:hover {
+  background-color: #007f68;
+  transform: scale(1.05);
+}
+
+.usuario-button {
+  background-color: #007f68;
+  color: #ffffff;
+}
+
+.usuario-button:hover {
+  background-color: #00A789;
+  transform: scale(1.05);
+}

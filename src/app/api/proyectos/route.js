@@ -5,9 +5,9 @@ export async function GET() {
     try {
         const { rows: proyectos } = await sql`
             SELECT p.proyecto_id, p.nombre AS proyecto_nombre, p.descripcion, p.horario, 
-                   pr.nombre AS profesor_nombre, pr.apellidos AS profesor_apellidos 
+                   pr.nombre_p AS profesor_nombre, pr.apellidos_p AS profesor_apellidos 
             FROM proyectos p 
-            LEFT JOIN profesores pr ON p.profesor_id = pr.prof_id;
+            LEFT JOIN profesores pr ON p.profe_id = pr.profe_id;
         `;
         return NextResponse.json(proyectos);
     } catch (error) {

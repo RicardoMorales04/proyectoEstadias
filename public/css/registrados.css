@@ -39,12 +39,6 @@ tr:nth-child(even) {
     background-color: #f9f9f9;
 }
 
-.foto-perfil {
-    width: 50px;
-    height: 50px;
-    margin-right: 10px;
-}
-
 .tdN{
     text-align: center;
     color: #f9f9f9;

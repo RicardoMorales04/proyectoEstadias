@@ -2,28 +2,29 @@
 
 @media screen and (max-width: 768px) {
   .navbar-brand img {
-    margin-right: 20px; /* Reduce el margen */
+    margin-right: 20px;
   }
   
   .navbar-brand-logo img {
-    margin-right: 20px; /* Reduce el margen */
+    margin-right: 20px;
   }
   
   .search-input {
-    width: 70%; /* Utiliza un porcentaje del ancho */
+    width: 70%;
   }
   
   .mini-menu ul li {
-    margin-right: 20px; /* Reduce el margen */
+    margin-right: 20px;
   }
   
   .contenedor-mapa {
-    width: 90%; /* Utiliza un porcentaje del ancho */
-    height: 250px; /* Reducimos la altura */
+    width: 90%;
+    height: 250px;
   }
 }
 
 body {
+    font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
     background-color: #002855;
@@ -194,22 +195,21 @@ body {
     text-decoration: none !important;
 }
 
-/* Estilos para el nav con class="mostrar" */
 .mostrar {
   position: fixed;
   top: 0;
-  left: -300px; /* El menú está oculto inicialmente */
+  left: -300px;
   width: 300px;
   height: 100%;
-  background-color: #004080; /* Color de fondo */
+  background-color: #004080;
   overflow-x: hidden;
-  transition: 0.3s; /* Transición para el desplazamiento */
+  transition: 0.3s;
   padding-top: 20px;
   z-index: 1000;
 }
 
 .mostrar.open {
-  left: 0; /* Muestra el menú */
+  left: 0;
 }
 
 .mostrar_flex {
@@ -240,7 +240,7 @@ body {
 }
 
 .accesos_principales .accordion2 .link2 {
-  background-color: #0056b3; /* Color del botón */
+  background-color: #0056b3;
   color: white;
   padding: 10px;
   border-radius: 5px;
@@ -248,7 +248,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 1px solid #003366; /* Borde */
+  border: 1px solid #003366;
   transition: background-color 0.3s;
 }
 

@@ -1,10 +1,7 @@
 "use client";
 import "../../public/css/inicio.css";
-import { useRouter } from 'next/navigation';
 
 function HomePage() {
-  const router = useRouter();
-
   return (
     <div className="contenedor-blanco">
       <div className="contenedor-img">
